@@ -14,7 +14,6 @@ This project includes four folders:
 This AI tool is supported for *Linux* and *Windows*. This AI tool has been tested on the following systems:
 
 + Linux: Ubuntu 18.04
-+ Windows: Windows 10, version 20H2
 
 ```bash
 Package                Version
