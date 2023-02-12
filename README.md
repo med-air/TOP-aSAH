@@ -30,3 +30,9 @@ medpy                  0.4.0
 scikit-learn           0.24.2
 pandas                 1.1.5
 ```
+
+# License
+This project is covered under the **Apache 2.0 License**.
+
+# Contact
+For any questions, please contact 'wama@cse.cuhk.edu.hk'
