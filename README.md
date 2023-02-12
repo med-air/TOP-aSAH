@@ -11,7 +11,7 @@ This project includes four folders:
 # Setup
 
 ### OS Requirements
-This AI tool is supported for *Linux* and *Windows*. This AI tool has been tested on the following systems:
+This model has been tested on the following systems:
 
 + Linux: Ubuntu 18.04
 
