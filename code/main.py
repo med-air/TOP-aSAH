@@ -172,8 +172,8 @@ def train(train_loader, net, optimizer, criterion, class_ratio):
 
         # forward + backward + optimize
         outputs, sim_loss, close_loss = net(inputs,labels,images,traumatic)
-        #loss = criterion(outputs, labels, traumatic, class_ratio) + sim_loss + 0.05*close_loss
-        loss = criterion(outputs, labels, traumatic, class_ratio)
+        loss = criterion(outputs, labels, traumatic, class_ratio) + sim_loss + 0.05*close_loss
+        #loss = criterion(outputs, labels, traumatic, class_ratio)
         loss.backward()
         optimizer.step()
 
