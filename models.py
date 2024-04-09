@@ -489,13 +489,13 @@ def similarity_matrix(phi_im,phi_cli,t, traumatic):
     
     return pairs_im, pairs_cli, sim_im_hub, sim_cli_hub
         
-class DragonNet_3dimg_3cls_ours3(nn.Module):
+class MultiRL(nn.Module):
     """
     3-headed dragonnet architecture
     """
 
     def __init__(self, in_features, out_features=[200, 100, 1]):
-        super(DragonNet_3dimg_3cls_ours3, self).__init__()
+        super(MultiRL, self).__init__()
         dropout = False
         # representation layers 3 : block1
         # units in kera = out_features
