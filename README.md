@@ -4,9 +4,9 @@ Pytorch implementation for paper **[Causal Effect Estimation on Imaging and Clin
 Data for Treatment Decision Support of
 Aneurysmal Subarachnoid Hemorrhage](https://github.com/med-air/TOP-aSAH)**
 
-This project includes two folders:
-1. data: store the data used in this project (for both imaging data and clinical non-imaging data).
-2. code: source code for our paper.
+<p align="center">
+<img src="./assets/intro.png" alt="intro" width="85%"/>
+</p>
 
 # Setup
 
