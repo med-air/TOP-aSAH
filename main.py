@@ -246,7 +246,7 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
         
     elif dragon == 'Ours':
         print("I am here Ours")
-        net = DragonNet_3dimg_3cls_ours3(x.shape[1]).to("cuda")
+        net = MultiRL(x.shape[1]).to("cuda")
 
     # Which loss to use for training the network
     #net = torch.nn.DataParallel(net)
