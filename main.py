@@ -526,7 +526,7 @@ def turn_knob(data_base_dir='/Users/claudiashi/data/test/', knob='dragonnet',
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_base_dir', type=str, help="path to directory LBIDD",default='../dat/hadcl')
+    parser.add_argument('--data_base_dir', type=str, help="path to directory LBIDD",default='./data/SAH')
     parser.add_argument('--knob', type=str, default='Ours',
                         help="dragonnet or tarnet or Ours")
 
