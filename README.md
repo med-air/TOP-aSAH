@@ -14,7 +14,6 @@ We have conducted extensive experiments using a clinical dataset of 656 subarach
 
 # Setup
 
-## OS Requirements
 This model has been tested on the following systems:
 
 + Linux: Ubuntu 18.04
