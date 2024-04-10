@@ -233,8 +233,8 @@ for validation_index in range(10):
     train_outputs_best = {}
     test_outputs_best = {}
     for epoch in range(600,1500,10):
-        test_results = np.load("../results_save/cli/{}_fold_{}_epoch_test.npz".format(validation_index, epoch), allow_pickle=True)
-        train_results = np.load("../results_save/cli/{}_fold_{}_epoch_train.npz".format(validation_index, epoch), allow_pickle=True)
+        test_results = np.load("./results_save/cli/{}_fold_{}_epoch_test.npz".format(validation_index, epoch), allow_pickle=True)
+        train_results = np.load("./results_save/cli/{}_fold_{}_epoch_train.npz".format(validation_index, epoch), allow_pickle=True)
         
         yt_hat_test, t_test, y_test, y, x_test = test_results['yt_hat_test'], test_results['t_test'], test_results['y_test'], \
         test_results['y'], test_results['x_test']
