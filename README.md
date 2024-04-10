@@ -21,17 +21,24 @@ This model has been tested on the following systems:
 ```bash
 Package                Version
 ---------------------- -------------------
-torch                  1.4.0
-torchvision            0.5.0
-h5py                   3.1.0
-opencv-python          4.5.2.52
-SimpleITK              2.0.2
+torch                  1.9.0
+torchvision            0.10.0
+h5py                   2.10.0
+opencv-python          4.6.0
+SimpleITK              2.1.1
 scikit-image.          0.17.2
 ml-collections         0.1.1
 tensorboardx           2.2.0
-medpy                  0.4.0
+medpy                  0.3.0
 scikit-learn           0.24.2
 pandas                 1.1.5
+```
+
+You can install packages using provided `environment.yaml`.
+
+```shell
+conda env create -f environment.yaml
+conda activate TOP_aSAH
 ```
 
 # Training & Testing
