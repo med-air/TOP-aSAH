@@ -44,11 +44,15 @@ conda activate TOP_aSAH
 # Training & Testing
 + This article uses a private dataset. In order to successfully run the code, you need to prepare your own dataset.
 + Specifically, you need to prepare a .xls file, which saves the patients' non-imaging clinical data and the path of imaging data. We have provided an example for you to run the data, which is saved in "./data/SAH/example.xls".
-+ We run main.py to train and evaluate the model:
++ We run main.py to train and test the model:
 ```bash 
 python main.py
 ```
 + Our proposed model is saved in models.py, named "MultiRL".
++ We use the policy risk, the absolute error in average treatment effect and the accuracy to evaluate our model. You can run evaluation.py to calculate these metrics:
+```bash 
+python evaluation.py
+```
 
 # License
 This project is covered under the **Apache 2.0 License**.
