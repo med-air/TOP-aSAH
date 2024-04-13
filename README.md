@@ -37,6 +37,8 @@ pandas                 1.1.5
 You can install packages using provided `environment.yaml`.
 
 ```shell
+git clone https://github.com/med-air/TOP-aSAH
+cd TOP-aSAH
 conda env create -f environment.yaml
 conda activate TOP_aSAH
 ```
