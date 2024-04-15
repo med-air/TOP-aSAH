@@ -45,6 +45,10 @@ conda activate TOP_aSAH
 
 # Data preparing
 + This article uses a private dataset. In order to successfully run the code, you need to prepare your own dataset.
++ Examples of multi-modality data inputs used in our study. We use plain CT scans as image data, and structured tabular data as non-imaging clinical data:
+<p align="center">
+<img src="./assets/data.png" alt="data" width="85%"/>
+</p>
 + Specifically, you need to prepare a .xls file, which saves the patients' non-imaging tabular data and the path of imaging data. We have provided an example for you to run the data, which is saved in "./data/SAH/example.xls".
 + Then you need to sort out the non-imaging tabular data (.xlsx) and the imaging data (.nii.gz) like this：
 ```bash
@@ -58,10 +62,7 @@ conda activate TOP_aSAH
         └── example.xlsx
     └──...
 ```
-+ Examples of multi-modality data inputs used in our study. We use plain CT scans as image data, and structured tabular data as non-imaging clinical data:
-<p align="center">
-<img src="./assets/data.png" alt="data" width="85%"/>
-</p>
+
 
 # Training & Testing
 
