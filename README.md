@@ -60,7 +60,7 @@ conda activate TOP_aSAH
 ```
 + Examples of multi-modality data inputs used in our study. We use plain CT scans as image data, and structured tabular data as non-imaging clinical data:
 <p align="center">
-<img src="./assets/data.png" alt="intro" width="85%"/>
+<img src="./assets/data.png" alt="data" width="85%"/>
 </p>
 
 # Training & Testing
