@@ -72,6 +72,7 @@ conda activate TOP_aSAH
 python main.py
 ```
 + Our proposed model is saved in models.py, named "MultiRL".
++ During the training phase, the code will conduct an evaluation every 10 epochs, and the results of the evaluation will be saved in the "results_save" folder.
 + We use the policy risk, the absolute error in average treatment effect and the accuracy to evaluate our model. You can run evaluation.py to calculate these metrics:
 ```bash 
 python evaluation.py
