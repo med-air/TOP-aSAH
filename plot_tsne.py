@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import manifold
 import pandas as pd
 
-data = np.load("../tsne_save/2_fold_0_epoch_train.npz", allow_pickle=True)
+data = np.load("../results_save/ours_woDB/2_fold_0_epoch_train.npz", allow_pickle=True)
 treatment_list = data['treatment_list']
 psi_im_list = data['psi_im_list']
 psi_cli_list = data['psi_cli_list']
