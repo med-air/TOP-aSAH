@@ -78,6 +78,10 @@ python main.py
 ```bash 
 python evaluation.py
 ```
++ Plot the t-SNE figure by:
+```bash 
+python plot_tsne.py
+```
 
 # License
 This project is covered under the **Apache 2.0 License**.
