@@ -84,7 +84,7 @@ python evaluation.py
 python plot_tsne.py
 ```
 <p align="center">
-<img src="./assets/tsne.png" alt="tsne" width="65%"/>
+<img src="./assets/tsne.png" alt="tsne" width="50%"/>
 </p>
 # License
 This project is covered under the **Apache 2.0 License**.
