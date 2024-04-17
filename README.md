@@ -75,7 +75,8 @@ python main.py
 + This code will automatically partition the organized data, perform 10-fold cross validation, and automatically store the corresponding model files and evaluation results.
 + During the training phase, the code will conduct an evaluation every 10 epochs, and the results of the evaluation will be saved in the "results_save" folder.
 + The model is saved every 100 epochs, and the model files are stored in the "models_save" folder.
-+ We use the policy risk, the absolute error in average treatment effect and the accuracy to evaluate our model. You can run evaluation.py to calculate these metrics:
++ We use the policy risk, the absolute error in average treatment effect and the accuracy to evaluate our model. For more details, please refer to our paper or **[Estimating individual treatment effect: generalization bounds and algorithms](https://arxiv.org/abs/1606.03976)** 
++ You can run evaluation.py to calculate these metrics:
 ```bash 
 python evaluation.py
 ```
