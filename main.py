@@ -15,17 +15,16 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 #torch.backends.cudnn.enabled = False
 #random.shuffle
 def policy_val(t, yf, q_t0, q_t1, q_t2, compute_policy_curve=False):
-    """
-    This function can caluculate the policy risk
-    Parameters
-    ----------
-    t : the factual treatment 
-    yf: the factual outcome
-    q_t0 : survival probability of treatment 0
-    q_t1 : survival probability of treatment 1
-    q_t2 : survival probability of treatment 2
 
-    """
+    # This function can caluculate the policy risk
+    # Parameters
+    # ----------
+    # t : the factual treatment 
+    # yf: the factual outcome
+    # q_t0 : survival probability of treatment 0
+    # q_t1 : survival probability of treatment 1
+    # q_t2 : survival probability of treatment 2
+
     q_cat = np.concatenate((q_t0, q_t1),1)
     q_cat = np.concatenate((q_cat, q_t2),1)
     policy = np.argmax(q_cat,1)
@@ -58,17 +57,16 @@ def policy_val(t, yf, q_t0, q_t1, q_t2, compute_policy_curve=False):
     return policy_value
 
 def factual_acc(t, yf, q_t0, q_t1, q_t2):
-    """
-    This function can caluculate the factual accuracy
-    Parameters
-    ----------
-    t : the factual treatment 
-    yf: the factual outcome
-    q_t0 : survival probability of treatment 0
-    q_t1 : survival probability of treatment 1
-    q_t2 : survival probability of treatment 2
 
-    """
+    # This function can caluculate the factual accuracy
+    # Parameters
+    # ----------
+    # t : the factual treatment 
+    # yf: the factual outcome
+    # q_t0 : survival probability of treatment 0
+    # q_t1 : survival probability of treatment 1
+    # q_t2 : survival probability of treatment 2
+
     q_t0[q_t0>=0.5] = 1
     q_t0[q_t0<0.5] = 0
     
@@ -92,21 +90,21 @@ def policy_risk_multi(t, yf, q_t0, q_t1, q_t2):
     return policy_risk
 
 
-"""Calculate the average treatment effect between treatment 0 and 1"""
+# Calculate the average treatment effect between treatment 0 and 1
 def ate_error_0_1(t, yf, eff_pred):
     att = np.mean(yf[t==0]) - np.mean(yf[t==1])
     pred_att = np.mean(eff_pred)
     
     return np.abs(att-pred_att)
     
-"""Calculate the average treatment effect between treatment 0 and 2"""
+# Calculate the average treatment effect between treatment 0 and 2
 def ate_error_0_2(t, yf, eff_pred):
     att = np.mean(yf[t==0]) - np.mean(yf[t==2])
     pred_att = np.mean(eff_pred)
     
     return np.abs(att-pred_att)
 
-"""Calculate the average treatment effect between treatment 1 and 2"""    
+# Calculate the average treatment effect between treatment 1 and 2  
 def ate_error_1_2(t, yf, eff_pred):
     att = np.mean(yf[t==1]) - np.mean(yf[t==2])
     pred_att = np.mean(eff_pred)
@@ -114,19 +112,19 @@ def ate_error_1_2(t, yf, eff_pred):
     return np.abs(att-pred_att)
 
 def _split_output(yt_hat, t, y, y_scaler, x, index, is_train=False):
-    """
-        Split output into dictionary for easier use in estimation
-        Args:
-            yt_hat: Generated prediction
-            t: Binary treatment assignments
-            y: Treatment outcomes
-            y_scaler: Scaled treatment outcomes
-            x: Covariates
-            index: Index in data
 
-        Returns:
-            Dictionary of all evaluation metrics
-    """
+        # Split output into dictionary for easier use in estimation
+        # Args:
+            # yt_hat: Generated prediction
+            # t: Binary treatment assignments
+            # y: Treatment outcomes
+            # y_scaler: Scaled treatment outcomes
+            # x: Covariates
+            # index: Index in data
+
+        # Returns:
+            # Dictionary of all evaluation metrics
+
     traumatic = x[:,3]
     traumatic_index = np.where(traumatic==1)
     yt_hat = yt_hat[traumatic_index]
@@ -173,15 +171,15 @@ def _split_output(yt_hat, t, y, y_scaler, x, index, is_train=False):
 
 
 def train(train_loader, net, optimizer, criterion, class_ratio):
-    """
-    Trains network for one epoch in batches.
 
-    Args:
-        train_loader: Data loader for training set.
-        net: Neural network model.
-        optimizer: Optimizer (e.g. SGD).
-        criterion: Loss function (e.g. cross-entropy loss).
-    """
+    # Trains network for one epoch in batches.
+
+    # Args:
+    #     train_loader: Data loader for training set.
+    #     net: Neural network model.
+    #     optimizer: Optimizer (e.g. SGD).
+    #     criterion: Loss function (e.g. cross-entropy loss).
+
 
     avg_loss = 0
 
@@ -206,15 +204,15 @@ def train(train_loader, net, optimizer, criterion, class_ratio):
     return avg_loss / len(train_loader)
 
 def test(train_loader, net, criterion, number):
-    """
-    Trains network for one epoch in batches.
 
-    Args:
-        train_loader: Data loader for training set.
-        net: Neural network model.
-        optimizer: Optimizer (e.g. SGD).
-        criterion: Loss function (e.g. cross-entropy loss).
-    """
+    # Trains network for one epoch in batches.
+
+    # Args:
+    #     train_loader: Data loader for training set.
+    #     net: Neural network model.
+    #     optimizer: Optimizer (e.g. SGD).
+    #     criterion: Loss function (e.g. cross-entropy loss).
+
     net.eval()
     avg_loss = 0
 
@@ -244,11 +242,11 @@ def load_image(path):
 
 def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, output_dir='',
                               knob_loss=dragonnet_loss_binarycross_3cls_ours, ratio=1., dragon='', val_split=0.2, batch_size=64, validation_index=0):
-    """
-    Method for training our proposed model and predicting new results
-    Returns:
-        Outputs on train and test data
-    """
+
+    # Method for training our proposed model and predicting new results
+    # Returns:
+    #     Outputs on train and test data
+
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
@@ -286,7 +284,7 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
     np.random.seed(i)
     # Get the data and optionally divide into train and test set
 
-    """Sort out the training and validation data according to 10-fold cross validation"""
+   # Sort out the training and validation data according to 10-fold cross validation
     all_index = np.arange(int(x.shape[0]))
     if validation_index == 9:
         test_index = np.arange(int(math.ceil(x.shape[0]/10)*validation_index),int(x.shape[0]))
@@ -330,7 +328,7 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
 
     # Add L2 regularization to t0 and t1 heads of the network
     
-    """Set up the optimizer"""
+    # Set up the optimizer
     low_rate = 5e-4
     weight_decays = 5e-3
     optimizer_Adam = optim.Adam([{'params': net.representation_block.parameters(),'lr':low_rate},
@@ -364,11 +362,11 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
 
     
     for epoch in range(epochs0, epochs1):
-        """Adam training run"""
+        # Adam training run
         train_loss = train(train_loader, net, optimizer_Adam, loss, class_ratio)
         scheduler_Adam.step(train_loss)
         
-        """Evaluate the model on the validation set and save the results every 10 epoch"""
+        # Evaluate the model on the validation set and save the results every 10 epoch
         if epoch % 10 ==0:
             print(str(epoch)+"/"+str(epochs1)+" "+f"Adam loss: {train_loss}")
             yt_hat_test = test(test_loader, net, loss, len(test_index))
@@ -385,7 +383,7 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
                 best_evaluation = test_outputs['Policy Risk']
             print("==================the {} fold====================".format(validation_index))
 
-        """Save the model every 100 epoch"""
+        # Save the model every 100 epoch
         if epoch % 100 ==0:
             save_model_path = '../models_save/ours_woDB/'+str(epoch)+'.pth'
             torch.save(net.state_dict(),save_model_path)
@@ -435,7 +433,7 @@ def run_ihdp(data_base_dir='./data/SAH', output_dir='~/result/ihdp/',
         train_ate_error_1_2 = []
         train_treatment_accuracy = []
        
-        """Perform 10-fold cross validation"""
+        # Perform 10-fold cross validation
         for validation_index in range(0,10):
             # print("Is targeted regularization: {}".format(is_targeted_regularization))
             test_outputs_best, train_outputs_best = train_and_predict_dragons(t, y, x, img_path,
@@ -444,7 +442,7 @@ def run_ihdp(data_base_dir='./data/SAH', output_dir='~/result/ihdp/',
                                                                    knob_loss=knob_loss, ratio=ratio, dragon=dragon,
                                                                    val_split=0.2, batch_size=256, validation_index=validation_index)
                   
-            """Evaluate the model after each cross validation"""
+            # Evaluate the model after each cross validation
             print("==========Best test results for the {} fold==========".format(validation_index))
             print("average propensity for t0: {} and t1: {} and t2: {}".format(test_outputs_best['ave propensity for t0'],test_outputs_best['ave propensity for t1'],
             test_outputs_best['ave propensity for t2']))
