@@ -15,8 +15,17 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 #torch.backends.cudnn.enabled = False
 #random.shuffle
 def policy_val(t, yf, q_t0, q_t1, q_t2, compute_policy_curve=False):
-    # if np.any(np.isnan(eff_pred)):
-        # return np.nan, np.nan
+    """
+    This function can caluculate the policy risk
+    Parameters
+    ----------
+    t : the factual treatment 
+    yf: the factual outcome
+    q_t0 : survival probability of treatment 0
+    q_t1 : survival probability of treatment 1
+    q_t2 : survival probability of treatment 2
+
+    """
     q_cat = np.concatenate((q_t0, q_t1),1)
     q_cat = np.concatenate((q_cat, q_t2),1)
     policy = np.argmax(q_cat,1)
@@ -49,7 +58,17 @@ def policy_val(t, yf, q_t0, q_t1, q_t2, compute_policy_curve=False):
     return policy_value
 
 def factual_acc(t, yf, q_t0, q_t1, q_t2):
+    """
+    This function can caluculate the factual accuracy
+    Parameters
+    ----------
+    t : the factual treatment 
+    yf: the factual outcome
+    q_t0 : survival probability of treatment 0
+    q_t1 : survival probability of treatment 1
+    q_t2 : survival probability of treatment 2
 
+    """
     q_t0[q_t0>=0.5] = 1
     q_t0[q_t0<0.5] = 0
     
@@ -71,19 +90,23 @@ def policy_risk_multi(t, yf, q_t0, q_t1, q_t2):
     policy_value = policy_val(t, yf, q_t0, q_t1, q_t2)
     policy_risk = 1 - policy_value
     return policy_risk
-  
+
+
+"""Calculate the average treatment effect between treatment 0 and 1"""
 def ate_error_0_1(t, yf, eff_pred):
     att = np.mean(yf[t==0]) - np.mean(yf[t==1])
     pred_att = np.mean(eff_pred)
     
     return np.abs(att-pred_att)
     
+"""Calculate the average treatment effect between treatment 0 and 2"""
 def ate_error_0_2(t, yf, eff_pred):
     att = np.mean(yf[t==0]) - np.mean(yf[t==2])
     pred_att = np.mean(eff_pred)
     
     return np.abs(att-pred_att)
-    
+
+"""Calculate the average treatment effect between treatment 1 and 2"""    
 def ate_error_1_2(t, yf, eff_pred):
     att = np.mean(yf[t==1]) - np.mean(yf[t==2])
     pred_att = np.mean(eff_pred)
@@ -102,7 +125,7 @@ def _split_output(yt_hat, t, y, y_scaler, x, index, is_train=False):
             index: Index in data
 
         Returns:
-            Dictionary of all needed data
+            Dictionary of all evaluation metrics
     """
     traumatic = x[:,3]
     traumatic_index = np.where(traumatic==1)
@@ -222,7 +245,7 @@ def load_image(path):
 def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, output_dir='',
                               knob_loss=dragonnet_loss_binarycross_3cls_ours, ratio=1., dragon='', val_split=0.2, batch_size=64, validation_index=0):
     """
-    Method for training dragonnet and tarnet and predicting new results
+    Method for training our proposed model and predicting new results
     Returns:
         Outputs on train and test data
     """
@@ -263,6 +286,7 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
     np.random.seed(i)
     # Get the data and optionally divide into train and test set
 
+    """Sort out the training and validation data according to 10-fold cross validation"""
     all_index = np.arange(int(x.shape[0]))
     if validation_index == 9:
         test_index = np.arange(int(math.ceil(x.shape[0]/10)*validation_index),int(x.shape[0]))
@@ -305,7 +329,8 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
     epochs2 = 500
 
     # Add L2 regularization to t0 and t1 heads of the network
-  
+    
+    """Set up the optimizer"""
     low_rate = 5e-4
     weight_decays = 5e-3
     optimizer_Adam = optim.Adam([{'params': net.representation_block.parameters(),'lr':low_rate},
@@ -323,36 +348,12 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
                             {'params': net.share.parameters(),'lr':low_rate},
                             {'params': net.H_bar_im.parameters(),'lr':low_rate},
                             {'params': net.H_bar_cli.parameters(),'lr':low_rate},
-                            #{'params': net.F0_im.parameters(),'lr':1e-5},
-                            #{'params': net.F0_cli.parameters(),'lr':1e-5},
-                            #{'params': net.F1_im.parameters(),'lr':1e-5},
-                            #{'params': net.F1_cli.parameters(),'lr':1e-5},
-                            #{'params': net.F2_im.parameters(),'lr':1e-5},
-                            #{'params': net.F2_cli.parameters(),'lr':1e-5},
                             {'params': net.pro_cli.parameters(),'lr':low_rate},
                             {'params': net.pro_im.parameters(),'lr':low_rate},
                             {'params': net.resenet_head.parameters(),'lr':low_rate}], lr=5e-3)
     scheduler_Adam = optim.lr_scheduler.StepLR(optimizer=optimizer_Adam, step_size = 300, gamma=0.5)       
     
-    # optimizer_SGD = optim.SGD([{'params': net.representation_block.parameters(),'lr':low_rate},
-                            # {'params': net.t_predictions.parameters()},
-                            # {'params': net.t0_head.parameters(),'weight_decay': 0.01},
-                            # {'params': net.t1_head.parameters(),'weight_decay': 0.01},
-                            # {'params': net.t2_head.parameters(),'weight_decay': 0.01},
-                            # {'params': net.share.parameters(),'lr':low_rate},
-                            # {'params': net.H_bar_im.parameters(),'lr':low_rate},
-                            # {'params': net.H_bar_cli.parameters(),'lr':low_rate},
-                            # #{'params': net.F0_im.parameters(),'lr':1e-5},
-                            # #{'params': net.F0_cli.parameters(),'lr':1e-5},
-                            # #{'params': net.F1_im.parameters(),'lr':1e-5},
-                            # #{'params': net.F1_cli.parameters(),'lr':1e-5},
-                            # #{'params': net.F2_im.parameters(),'lr':1e-5},
-                            # #{'params': net.F2_cli.parameters(),'lr':1e-5},
-                            # {'params': net.pro_cli.parameters(),'lr':low_rate},
-                            # {'params': net.pro_im.parameters(),'lr':low_rate},
-                            # {'params': net.resenet_head.parameters(),'lr':low_rate},
-                            # {'params': net.fc_cat.parameters(),'lr':low_rate}], lr=1e-2, momentum=0.9)                                             
-    #scheduler_SGD = optim.lr_scheduler.StepLR(optimizer=optimizer_SGD, step_size = 200, gamma=0.5)  
+ 
 
     train_loss = 0
     epochs0 = 0
@@ -361,17 +362,13 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
         load_model_path = '../models_save/ours/'+str(epochs0)+'.pth'
         net.load_state_dict(torch.load(load_model_path))
 
-    # Adam training run
+    
     for epoch in range(epochs0, epochs1):
-        # Train on data
+        """Adam training run"""
         train_loss = train(train_loader, net, optimizer_Adam, loss, class_ratio)
         scheduler_Adam.step(train_loss)
         
-        #train_loss = train(train_loader, net, optimizer_SGD, loss, class_ratio)
-        #scheduler_SGD.step(train_loss)
-
-        
-        
+        """Evaluate the model on the validation set and save the results every 10 epoch"""
         if epoch % 10 ==0:
             print(str(epoch)+"/"+str(epochs1)+" "+f"Adam loss: {train_loss}")
             yt_hat_test = test(test_loader, net, loss, len(test_index))
@@ -388,6 +385,7 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
                 best_evaluation = test_outputs['Policy Risk']
             print("==================the {} fold====================".format(validation_index))
 
+        """Save the model every 100 epoch"""
         if epoch % 100 ==0:
             save_model_path = '../models_save/ours_woDB/'+str(epoch)+'.pth'
             torch.save(net.state_dict(),save_model_path)
@@ -396,11 +394,11 @@ def train_and_predict_dragons(t, y, x, img_path, targeted_regularization=True, o
     return test_outputs_best, train_outputs_best
 
 
-def run_ihdp(data_base_dir='/Users/claudiashi/data/ihdp_csv', output_dir='~/result/ihdp/',
+def run_ihdp(data_base_dir='./data/SAH', output_dir='~/result/ihdp/',
              knob_loss=dragonnet_loss_binarycross_3cls_ours,
              ratio=1., dragon=''):
 
-    print("the dragon is {}".format(dragon))
+    print("the model is {}".format(dragon))
 
     simulation_files = sorted(glob.glob("{}/*.xls".format(data_base_dir)))
 
@@ -437,7 +435,7 @@ def run_ihdp(data_base_dir='/Users/claudiashi/data/ihdp_csv', output_dir='~/resu
         train_ate_error_1_2 = []
         train_treatment_accuracy = []
        
-
+        """Perform 10-fold cross validation"""
         for validation_index in range(0,10):
             # print("Is targeted regularization: {}".format(is_targeted_regularization))
             test_outputs_best, train_outputs_best = train_and_predict_dragons(t, y, x, img_path,
@@ -446,8 +444,7 @@ def run_ihdp(data_base_dir='/Users/claudiashi/data/ihdp_csv', output_dir='~/resu
                                                                    knob_loss=knob_loss, ratio=ratio, dragon=dragon,
                                                                    val_split=0.2, batch_size=256, validation_index=validation_index)
                   
-            #np.savez_compressed("../results_save/cli_img/{}_fold_test.npz".format(validation_index),test_outputs_best)
-            #np.savez_compressed("../results_save/cli_img/{}_fold_train.npz".format(validation_index),train_outputs_best)
+            """Evaluate the model after each cross validation"""
             print("==========Best test results for the {} fold==========".format(validation_index))
             print("average propensity for t0: {} and t1: {} and t2: {}".format(test_outputs_best['ave propensity for t0'],test_outputs_best['ave propensity for t1'],
             test_outputs_best['ave propensity for t2']))
@@ -511,7 +508,7 @@ def run_ihdp(data_base_dir='/Users/claudiashi/data/ihdp_csv', output_dir='~/resu
         print("=============================================")
 
 
-def turn_knob(data_base_dir='/Users/claudiashi/data/test/', knob='dragonnet',
+def turn_knob(data_base_dir='./data/SAH', knob='dragonnet',
               output_base_dir=''):
     output_dir = os.path.join(output_base_dir, knob)
 
