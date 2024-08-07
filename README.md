@@ -2,7 +2,7 @@
 
 Pytorch implementation for paper **[Causal Effect Estimation on Imaging and Clinical
 Data for Treatment Decision Support of
-Aneurysmal Subarachnoid Hemorrhage](https://github.com/med-air/TOP-aSAH)**
+Aneurysmal Subarachnoid Hemorrhage]([https://github.com/med-air/TOP-aSAH](https://ieeexplore.ieee.org/abstract/document/10504783))**
 
 <p align="center">
 <img src="./assets/intro.png" alt="intro" width="85%"/>
